@@ -1,4 +1,4 @@
-name: AGEIUM Growth OS durable StaticDelivr E2E
+name: AGEIUM Growth OS durable Statically E2E
 on:
   push:
     branches: [dio-growth-os-commission-20260825]
@@ -10,7 +10,7 @@ jobs:
   durable-e2e:
     runs-on: ubuntu-latest
     env:
-      PUBLIC_BASE: https://cdn.staticdelivr.com/gh/HwangSenogWoo/ageium-blog/975c2f4495340bf62314a98def6eaf1ae0f018ef/
+      PUBLIC_BASE: https://cdn.statically.io/gh/HwangSenogWoo/ageium-blog@975c2f4495340bf62314a98def6eaf1ae0f018ef/
     steps:
       - name: Verify durable HTTPS exact bytes and MIME
         run: |
