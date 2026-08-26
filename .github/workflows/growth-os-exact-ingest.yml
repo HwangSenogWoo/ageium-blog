@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Fetch and verify exact RC1
         env:
-          RC1_URL: "https://sdmntprseasia.oaiusercontent.com/files/00000000-2a64-8207-b3ad-97c8c3fc9d48/raw?se=2026-08-26T07%3A14%3A24Z&sp=r&sv=2026-02-06&sr=b&scid=e5d4bc2c-48b1-5b24-b987-17dbf8cd8408&skoid=3e273c3d-5ea1-4088-9e18-79685531b184&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-25T22%3A07%3A52Z&ske=2026-08-26T22%3A07%3A52Z&sks=b&skv=2026-02-06&sig=1amE68w9UuYIuDlRmUIK6p3%2FyzfuoPVa7I%2BVlUb84Aw%3D"
+          RC1_URL: "https://sdmntprcentralus.oaiusercontent.com/files/00000000-6d54-81f5-9767-7bdd1d1f243f/raw?se=2026-08-26T07%3A15%3A37Z&sp=r&sv=2026-02-06&sr=b&scid=3a9d3307-af8a-5bd9-a8ba-055f54ade1de&skoid=3e273c3d-5ea1-4088-9e18-79685531b184&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-26T05%3A31%3A13Z&ske=2026-08-27T05%3A31%3A13Z&sks=b&skv=2026-02-06&sig=mfHAM07PyjIY5xKJD1bHmhGDSZuUYtyXZkkKKVnFeOo%3D"
         run: |
           set -euo pipefail
           curl -fL "$RC1_URL" -o /tmp/rc1.zip
@@ -29,6 +29,8 @@ jobs:
           test "$(sha256sum /tmp/site/sw.js | awk '{print $1}')" = "01372b67e149c14ac12c18dd7932ef265357fbf884333ed8b243eda2923babfa"
           test "$(sha256sum /tmp/site/source_provenance.json | awk '{print $1}')" = "f639d09baaaacdea7e2c09de71cd154fa7a975fb058b70e7d181edbcdb18903c"
       - name: Publish exact bytes to isolated branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           cd /tmp/site
@@ -40,8 +42,6 @@ jobs:
           git commit -qm "commission: exact AGEIUM Growth OS RC1 bytes"
           git branch -M growth-os-pages
           git push --force origin growth-os-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Attempt Pages activation
         continue-on-error: true
         env:
