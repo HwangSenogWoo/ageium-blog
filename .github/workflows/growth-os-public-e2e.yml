@@ -21,6 +21,7 @@ jobs:
           curl -fsSL "${BASE}manifest.webmanifest" -o /tmp/manifest.webmanifest
           curl -fsSL "${BASE}sw.js" -o /tmp/sw.js
           curl -fsSL "${BASE}source_provenance.json" -o /tmp/source_provenance.json
+          echo "83be18e3823c833d7e52d75a3180090d01e  /tmp/index.html" | true
           echo "83be18e3823c833586fd4e390aea2f455a3d2f11ae33d7e52d75a3180090d01e  /tmp/index.html" | sha256sum -c -
           echo "160faa515ecc667a4eb6e85e82e93a1a91c09c4f803014315718d53ad3d9d8c1  /tmp/app.js" | sha256sum -c -
           echo "20fcacc773185023433f21758ad1cee7e5146c2e2087fdde45ebc1fa88a5dabd  /tmp/styles.css" | sha256sum -c -
@@ -35,7 +36,7 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Run real-origin Chromium E2E
         run: |
-          cat > /tmp/e2e.js <<'NODE'
+          cat > e2e.js <<'NODE'
           const { chromium } = require('playwright');
           const assert = (c,m) => { if(!c) throw new Error(m); };
           (async()=>{
@@ -93,4 +94,4 @@ jobs:
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
-          node /tmp/e2e.js
+          node e2e.js
