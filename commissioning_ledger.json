@@ -1,0 +1,176 @@
+{
+  "schema": "ageium.growth-os.commissioning-ledger.v1",
+  "mission": "DIO-AGEIUM-1PCT-GROWTH-OS-FINAL-COMMISSIONING-20260825",
+  "product": "AGEIUM 1% Growth OS Ω",
+  "candidate": "RC1",
+  "chapterCount": 45,
+  "sourcePreservation": "3 source HTML hashes preserved in source_provenance.json",
+  "requirementClosure": true,
+  "wiringClosure": true,
+  "executionClosure": "PASS_LOCAL_STATIC_SERVER_AND_BROWSER_INMEMORY",
+  "evidenceClosure": true,
+  "workingChampionNonRegression": true,
+  "counterfactualGapSweep": true,
+  "targetRuntimeOperational": false,
+  "externalDeployment": "Vercel smoke path READY, exact candidate deployment NOT_CLOSED",
+  "irreducibleBoundary": "DIO Bridge raises ExceptionGroup for read/restart; Vercel connector can deploy inlined data/current project but cannot ingest the local exact artifact by file reference; Chromium network navigation is administrator-blocked in this execution container.",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 186,
+      "sha256": "9192e6e29b5031b11ca66c10f8665108ea526df93259f828fc5d3bedd7dcda12"
+    },
+    {
+      "path": "app.js",
+      "bytes": 10436,
+      "sha256": "160faa515ecc667a4eb6e85e82e93a1a91c09c4f803014315718d53ad3d9d8c1"
+    },
+    {
+      "path": "curriculum.json",
+      "bytes": 649711,
+      "sha256": "3d22d4b100965a5a73f594aeb83a4d1b63a7c3d1ac1dffbcd52a8d539ecff012"
+    },
+    {
+      "path": "e2e_results.json",
+      "bytes": 1960,
+      "sha256": "300ca3ed61a54001f80139a427fff6e3dcde6495756947017e306c00655331a2"
+    },
+    {
+      "path": "evidence_desktop.png",
+      "bytes": 735257,
+      "sha256": "3ea67d755d9e32db8ea7446932fbc8a47eddb844e1a8645700dc33a88b391412"
+    },
+    {
+      "path": "evidence_mobile.png",
+      "bytes": 212808,
+      "sha256": "9b799dd48108342ccf60c5ff379f989264fa7ac52c4e79525de8d1aa6a880862"
+    },
+    {
+      "path": "index.html",
+      "bytes": 6006,
+      "sha256": "83be18e3823c833586fd4e390aea2f455a3d2f11ae33d7e52d75a3180090d01e"
+    },
+    {
+      "path": "manifest.webmanifest",
+      "bytes": 321,
+      "sha256": "6a0b6d61bb2b9addc775e68a8e6f14f42f2b354888ce67079346133a6c4d7f30"
+    },
+    {
+      "path": "source_provenance.json",
+      "bytes": 647,
+      "sha256": "f639d09baaaacdea7e2c09de71cd154fa7a975fb058b70e7d181edbcdb18903c"
+    },
+    {
+      "path": "styles.css",
+      "bytes": 8719,
+      "sha256": "20fcacc773185023433f21758ad1cee7e5146c2e2087fdde45ebc1fa88a5dabd"
+    },
+    {
+      "path": "sw.js",
+      "bytes": 522,
+      "sha256": "01372b67e149c14ac12c18dd7932ef265357fbf884333ed8b243eda2923babfa"
+    }
+  ],
+  "tests": [
+    {
+      "name": "onboarding_visible",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "goal_bound",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "chapter_45",
+      "pass": true,
+      "detail": "45"
+    },
+    {
+      "name": "search_relevant",
+      "pass": true,
+      "detail": "집중력 습관: 딥워크 상태 진입법"
+    },
+    {
+      "name": "reader_open",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "full_body_loaded",
+      "pass": true,
+      "detail": "5439"
+    },
+    {
+      "name": "shrink_90",
+      "pass": true,
+      "detail": "90초"
+    },
+    {
+      "name": "timer_visible",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "done_count",
+      "pass": true,
+      "detail": "1"
+    },
+    {
+      "name": "genome_data",
+      "pass": true,
+      "detail": "아침"
+    },
+    {
+      "name": "memory_entries",
+      "pass": true,
+      "detail": "3"
+    },
+    {
+      "name": "mobile_no_overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop_visible",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop_no_overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "export_json",
+      "pass": true,
+      "detail": "growth-os-2026-08-25.json"
+    },
+    {
+      "name": "console_errors",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "chapter_distribution",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "manifest_present",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "service_worker_present",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "privacy_export_delete",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

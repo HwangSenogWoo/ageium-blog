@@ -1,0 +1,24 @@
+{
+  "schema": "ageium.growth-os.provenance.v1",
+  "sources": [
+    {
+      "file": "01_초급_50-100P.html",
+      "sha256": "7cf65c66a6c1229d535807a8d642da173c15c8c033626d717c9d3435f5fa1feb",
+      "bytes": 146651,
+      "tier": "basic"
+    },
+    {
+      "file": "02_중급_100-200P.html",
+      "sha256": "397e818228647cd15347f2fdc693b1f566703491f0367dcc7c32e3ab698f187b",
+      "bytes": 221209,
+      "tier": "intermediate"
+    },
+    {
+      "file": "03_고급_200-500P.html",
+      "sha256": "c420f7a79c18b98b4380fb712bf8570580f3ede8d44d18e914f582adcd087ebe",
+      "bytes": 331697,
+      "tier": "advanced"
+    }
+  ],
+  "chapterCount": 45
+}

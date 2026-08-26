@@ -1,0 +1,106 @@
+{
+  "pass": true,
+  "testBoundary": "Chromium exact UI/app/curriculum with test-only localStorage adapter because browser navigation is administrator-blocked",
+  "results": [
+    {
+      "name": "onboarding_visible",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "goal_bound",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "chapter_45",
+      "pass": true,
+      "detail": "45"
+    },
+    {
+      "name": "search_relevant",
+      "pass": true,
+      "detail": "집중력 습관: 딥워크 상태 진입법"
+    },
+    {
+      "name": "reader_open",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "full_body_loaded",
+      "pass": true,
+      "detail": "5439"
+    },
+    {
+      "name": "shrink_90",
+      "pass": true,
+      "detail": "90초"
+    },
+    {
+      "name": "timer_visible",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "done_count",
+      "pass": true,
+      "detail": "1"
+    },
+    {
+      "name": "genome_data",
+      "pass": true,
+      "detail": "아침"
+    },
+    {
+      "name": "memory_entries",
+      "pass": true,
+      "detail": "3"
+    },
+    {
+      "name": "mobile_no_overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop_visible",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop_no_overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "export_json",
+      "pass": true,
+      "detail": "growth-os-2026-08-25.json"
+    },
+    {
+      "name": "console_errors",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "chapter_distribution",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "manifest_present",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "service_worker_present",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "privacy_export_delete",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

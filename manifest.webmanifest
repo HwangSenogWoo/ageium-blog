@@ -1,0 +1,11 @@
+{
+  "name": "1% Growth OS Ω",
+  "short_name": "Growth OS",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#07101b",
+  "theme_color": "#08101d",
+  "lang": "ko",
+  "description": "실제 행동 기록으로 다음 1% 행동을 조정하는 로컬 우선 개인 성장 운영체제",
+  "icons": []
+}
