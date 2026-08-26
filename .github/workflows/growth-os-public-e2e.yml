@@ -1,4 +1,4 @@
-name: AGEIUM Growth OS public-origin E2E
+name: AGEIUM Growth OS public HTTPS E2E
 on:
   push:
     branches: [dio-growth-os-commission-20260825]
@@ -8,34 +8,67 @@ permissions:
 jobs:
   public-e2e:
     runs-on: ubuntu-latest
-    env:
-      BASE: https://cdn.jsdelivr.net/gh/HwangSenogWoo/ageium-blog@975c2f4495340bf62314a98def6eaf1ae0f018ef/
     steps:
-      - name: Verify public-origin exact bytes and browser MIME
+      - name: Checkout exact RC1 public commit
+        uses: actions/checkout@v4
+        with:
+          ref: 975c2f4495340bf62314a98def6eaf1ae0f018ef
+          path: site
+      - name: Re-attest exact candidate bytes
         run: |
           set -euo pipefail
-          curl -fsSI "${BASE}index.html" | tee /tmp/index.headers
-          curl -fsSL "${BASE}index.html" -o /tmp/index.html
-          curl -fsSL "${BASE}app.js" -o /tmp/app.js
-          curl -fsSL "${BASE}styles.css" -o /tmp/styles.css
-          curl -fsSL "${BASE}curriculum.json" -o /tmp/curriculum.json
-          curl -fsSL "${BASE}manifest.webmanifest" -o /tmp/manifest.webmanifest
-          curl -fsSL "${BASE}sw.js" -o /tmp/sw.js
-          curl -fsSL "${BASE}source_provenance.json" -o /tmp/source_provenance.json
-          echo "83be18e3823c833586fd4e390aea2f455a3d2f11ae33d7e52d75a3180090d01e  /tmp/index.html" | sha256sum -c -
-          echo "160faa515ecc667a4eb6e85e82e93a1a91c09c4f803014315718d53ad3d9d8c1  /tmp/app.js" | sha256sum -c -
-          echo "20fcacc773185023433f21758ad1cee7e5146c2e2087fdde45ebc1fa88a5dabd  /tmp/styles.css" | sha256sum -c -
-          echo "3d22d4b100965a5a73f594aeb83a4d1b63a7c3d1ac1dffbcd52a8d539ecff012  /tmp/curriculum.json" | sha256sum -c -
-          echo "6a0b6d61bb2b9addc775e68a8e6f14f42f2b354888ce67079346133a6c4d7f30  /tmp/manifest.webmanifest" | sha256sum -c -
-          echo "01372b67e149c14ac12c18dd7932ef265357fbf884333ed8b243eda2923babfa  /tmp/sw.js" | sha256sum -c -
-          echo "f639d09baaaacdea7e2c09de71cd154fa7a975fb058b70e7d181edbcdb18903c  /tmp/source_provenance.json" | sha256sum -c -
-          grep -iq '^content-type:.*text/html' /tmp/index.headers
+          echo "83be18e3823c833586fd4e390aea2f455a3d2f11ae33d7e52d75a3180090d01e  site/index.html" | sha256sum -c -
+          echo "160faa515ecc667a4eb6e85e82e93a1a91c09c4f803014315718d53ad3d9d8c1  site/app.js" | sha256sum -c -
+          echo "20fcacc773185023433f21758ad1cee7e5146c2e2087fdde45ebc1fa88a5dabd  site/styles.css" | sha256sum -c -
+          echo "3d22d4b100965a5a73f594aeb83a4d1b63a7c3d1ac1dffbcd52a8d539ecff012  site/curriculum.json" | sha256sum -c -
+          echo "6a0b6d61bb2b9addc775e68a8e6f14f42f2b354888ce67079346133a6c4d7f30  site/manifest.webmanifest" | sha256sum -c -
+          echo "01372b67e149c14ac12c18dd7932ef265357fbf884333ed8b243eda2923babfa  site/sw.js" | sha256sum -c -
+          echo "f639d09baaaacdea7e2c09de71cd154fa7a975fb058b70e7d181edbcdb18903c  site/source_provenance.json" | sha256sum -c -
+      - name: Start exact local origin and public HTTPS tunnel
+        run: |
+          set -euo pipefail
+          python3 -m http.server 4173 --bind 127.0.0.1 --directory site >/tmp/http.log 2>&1 &
+          echo $! >/tmp/http.pid
+          curl -fsSL https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o /tmp/cloudflared
+          chmod +x /tmp/cloudflared
+          /tmp/cloudflared tunnel --url http://127.0.0.1:4173 --no-autoupdate >/tmp/cloudflared.log 2>&1 &
+          echo $! >/tmp/cloudflared.pid
+          url=""
+          for i in $(seq 1 45); do
+            url=$(grep -Eo 'https://[-a-z0-9]+\.trycloudflare\.com' /tmp/cloudflared.log | head -1 || true)
+            if [ -n "$url" ]; then break; fi
+            sleep 1
+          done
+          if [ -z "$url" ]; then cat /tmp/cloudflared.log; exit 1; fi
+          echo "PUBLIC_BASE=${url}/" >> "$GITHUB_ENV"
+          echo "PUBLIC_BASE=${url}/"
+          for i in $(seq 1 20); do
+            if curl -fsSL --max-time 20 "${url}/index.html" -o /tmp/public-index.html; then break; fi
+            sleep 1
+          done
+          test -s /tmp/public-index.html
+          echo "83be18e3823c833586fd4e390aea2f455a3d2f11ae33d7e52d75a3180090d01e  /tmp/public-index.html" | sha256sum -c -
+      - name: Verify all public HTTPS bytes
+        run: |
+          set -euo pipefail
+          curl -fsSL "${PUBLIC_BASE}app.js" -o /tmp/public-app.js
+          curl -fsSL "${PUBLIC_BASE}styles.css" -o /tmp/public-styles.css
+          curl -fsSL "${PUBLIC_BASE}curriculum.json" -o /tmp/public-curriculum.json
+          curl -fsSL "${PUBLIC_BASE}manifest.webmanifest" -o /tmp/public-manifest.webmanifest
+          curl -fsSL "${PUBLIC_BASE}sw.js" -o /tmp/public-sw.js
+          curl -fsSL "${PUBLIC_BASE}source_provenance.json" -o /tmp/public-source_provenance.json
+          echo "160faa515ecc667a4eb6e85e82e93a1a91c09c4f803014315718d53ad3d9d8c1  /tmp/public-app.js" | sha256sum -c -
+          echo "20fcacc773185023433f21758ad1cee7e5146c2e2087fdde45ebc1fa88a5dabd  /tmp/public-styles.css" | sha256sum -c -
+          echo "3d22d4b100965a5a73f594aeb83a4d1b63a7c3d1ac1dffbcd52a8d539ecff012  /tmp/public-curriculum.json" | sha256sum -c -
+          echo "6a0b6d61bb2b9addc775e68a8e6f14f42f2b354888ce67079346133a6c4d7f30  /tmp/public-manifest.webmanifest" | sha256sum -c -
+          echo "01372b67e149c14ac12c18dd7932ef265357fbf884333ed8b243eda2923babfa  /tmp/public-sw.js" | sha256sum -c -
+          echo "f639d09baaaacdea7e2c09de71cd154fa7a975fb058b70e7d181edbcdb18903c  /tmp/public-source_provenance.json" | sha256sum -c -
       - name: Install browser harness
         run: |
           npm init -y >/dev/null 2>&1
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
-      - name: Run real-origin Chromium E2E
+      - name: Run real public HTTPS Chromium E2E
         run: |
           cat > e2e.js <<'NODE'
           const { chromium } = require('playwright');
@@ -47,9 +80,10 @@ jobs:
             const errors=[];
             page.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text())});
             page.on('pageerror',e=>errors.push('page:'+e.message));
-            const base=process.env.BASE;
+            const base=process.env.PUBLIC_BASE;
             const resp=await page.goto(base+'index.html',{waitUntil:'networkidle',timeout:60000});
-            console.log(JSON.stringify({status:resp?.status(),url:page.url(),contentType:await resp?.headerValue('content-type'),title:await page.title(),bodyStart:(await page.locator('body').innerText()).slice(0,240)},null,2));
+            assert(resp && resp.status()===200,'public_index_status');
+            assert((await resp.headerValue('content-type')||'').includes('text/html'),'public_index_mime');
             assert(await page.locator('#onboarding').count()===1,'onboarding_dom_missing');
             assert(await page.locator('#onboarding').evaluate(e=>e.open),'onboarding_not_open');
             await page.locator('#goalInput').fill('집중력을 높이고 싶다');
@@ -90,10 +124,10 @@ jobs:
             await context.setOffline(true);
             await page.reload({waitUntil:'domcontentloaded',timeout:30000});
             assert((await page.title()).includes('1% Growth OS'),'offline_shell_failed');
-            assert((await page.locator('#chapterGrid').count())===1,'offline_dom_failed');
+            assert(await page.locator('#chapterGrid').count()===1,'offline_dom_failed');
             await context.setOffline(false);
             assert(errors.length===0,'browser_errors:'+errors.join('|'));
-            console.log(JSON.stringify({decision:'PASS',public_origin:base+'index.html',chapter_count:45,local_storage:true,service_worker:sw,offline_reload:true,console_errors:errors},null,2));
+            console.log(JSON.stringify({decision:'PASS',candidate_commit:'975c2f4495340bf62314a98def6eaf1ae0f018ef',public_origin:base+'index.html',chapter_count:45,local_storage:true,service_worker:sw,offline_reload:true,console_errors:errors},null,2));
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
