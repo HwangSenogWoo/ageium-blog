@@ -9,7 +9,7 @@ jobs:
   public-e2e:
     runs-on: ubuntu-latest
     env:
-      BASE: https://rawcdn.githack.com/HwangSenogWoo/ageium-blog/975c2f4495340bf62314a98def6eaf1ae0f018ef/
+      BASE: https://cdn.jsdelivr.net/gh/HwangSenogWoo/ageium-blog@975c2f4495340bf62314a98def6eaf1ae0f018ef/
     steps:
       - name: Verify public-origin exact bytes and browser MIME
         run: |
