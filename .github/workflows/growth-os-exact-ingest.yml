@@ -1,50 +1,10 @@
-name: AGEIUM Growth OS exact ingest
+name: AGEIUM Growth OS exact ingest (manual only)
 on:
-  push:
-    branches: [dio-growth-os-commission-20260825]
   workflow_dispatch:
 permissions:
-  contents: write
-  pages: write
-  id-token: write
+  contents: read
 jobs:
-  ingest:
+  guard:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Fetch and verify exact RC1
-        env:
-          RC1_URL: "https://sdmntprcentralus.oaiusercontent.com/files/00000000-6d54-81f5-9767-7bdd1d1f243f/raw?se=2026-08-26T07%3A15%3A37Z&sp=r&sv=2026-02-06&sr=b&scid=3a9d3307-af8a-5bd9-a8ba-055f54ade1de&skoid=3e273c3d-5ea1-4088-9e18-79685531b184&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-08-26T05%3A31%3A13Z&ske=2026-08-27T05%3A31%3A13Z&sks=b&skv=2026-02-06&sig=mfHAM07PyjIY5xKJD1bHmhGDSZuUYtyXZkkKKVnFeOo%3D"
-        run: |
-          set -euo pipefail
-          curl -fL "$RC1_URL" -o /tmp/rc1.zip
-          echo "89932dfc7d964942b5107d12edd77c260873e0762eff56cbf68efa30db5bb1d9  /tmp/rc1.zip" | sha256sum -c -
-          mkdir -p /tmp/site
-          unzip -q /tmp/rc1.zip -d /tmp/site
-          test "$(sha256sum /tmp/site/index.html | awk '{print $1}')" = "83be18e3823c833586fd4e390aea2f455a3d2f11ae33d7e52d75a3180090d01e"
-          test "$(sha256sum /tmp/site/app.js | awk '{print $1}')" = "160faa515ecc667a4eb6e85e82e93a1a91c09c4f803014315718d53ad3d9d8c1"
-          test "$(sha256sum /tmp/site/styles.css | awk '{print $1}')" = "20fcacc773185023433f21758ad1cee7e5146c2e2087fdde45ebc1fa88a5dabd"
-          test "$(sha256sum /tmp/site/curriculum.json | awk '{print $1}')" = "3d22d4b100965a5a73f594aeb83a4d1b63a7c3d1ac1dffbcd52a8d539ecff012"
-          test "$(sha256sum /tmp/site/manifest.webmanifest | awk '{print $1}')" = "6a0b6d61bb2b9addc775e68a8e6f14f42f2b354888ce67079346133a6c4d7f30"
-          test "$(sha256sum /tmp/site/sw.js | awk '{print $1}')" = "01372b67e149c14ac12c18dd7932ef265357fbf884333ed8b243eda2923babfa"
-          test "$(sha256sum /tmp/site/source_provenance.json | awk '{print $1}')" = "f639d09baaaacdea7e2c09de71cd154fa7a975fb058b70e7d181edbcdb18903c"
-      - name: Publish exact bytes to isolated branch
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-          cd /tmp/site
-          git init -q
-          git config user.name "DIO Commissioning"
-          git config user.email "actions@users.noreply.github.com"
-          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git add -A
-          git commit -qm "commission: exact AGEIUM Growth OS RC1 bytes"
-          git branch -M growth-os-pages
-          git push --force origin growth-os-pages
-      - name: Attempt Pages activation
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh api --method POST "repos/${GITHUB_REPOSITORY}/pages" -f source[branch]=growth-os-pages -f source[path]=/ || true
+      - run: echo "Exact RC1 ingress already completed; obtain a fresh signed source and re-attest SHA before any replay."
