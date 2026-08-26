@@ -21,7 +21,6 @@ jobs:
           curl -fsSL "${BASE}manifest.webmanifest" -o /tmp/manifest.webmanifest
           curl -fsSL "${BASE}sw.js" -o /tmp/sw.js
           curl -fsSL "${BASE}source_provenance.json" -o /tmp/source_provenance.json
-          echo "83be18e3823c833d7e52d75a3180090d01e  /tmp/index.html" | true
           echo "83be18e3823c833586fd4e390aea2f455a3d2f11ae33d7e52d75a3180090d01e  /tmp/index.html" | sha256sum -c -
           echo "160faa515ecc667a4eb6e85e82e93a1a91c09c4f803014315718d53ad3d9d8c1  /tmp/app.js" | sha256sum -c -
           echo "20fcacc773185023433f21758ad1cee7e5146c2e2087fdde45ebc1fa88a5dabd  /tmp/styles.css" | sha256sum -c -
@@ -47,7 +46,7 @@ jobs:
             page.on('console',m=>{if(m.type()==='error')errors.push('console:'+m.text())});
             page.on('pageerror',e=>errors.push('page:'+e.message));
             const base=process.env.BASE;
-            await page.goto(base,{waitUntil:'networkidle',timeout:60000});
+            await page.goto(base+'index.html',{waitUntil:'networkidle',timeout:60000});
             assert(await page.locator('#onboarding').evaluate(e=>e.open),'onboarding_not_open');
             await page.locator('#goalInput').fill('집중력을 높이고 싶다');
             await page.locator('#whyInput').fill('매일 중요한 일을 끝내고 싶다');
@@ -90,7 +89,7 @@ jobs:
             assert((await page.locator('#chapterGrid').count())===1,'offline_dom_failed');
             await context.setOffline(false);
             assert(errors.length===0,'browser_errors:'+errors.join('|'));
-            console.log(JSON.stringify({decision:'PASS',public_origin:base,chapter_count:45,local_storage:true,service_worker:sw,offline_reload:true,console_errors:errors},null,2));
+            console.log(JSON.stringify({decision:'PASS',public_origin:base+'index.html',chapter_count:45,local_storage:true,service_worker:sw,offline_reload:true,console_errors:errors},null,2));
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
