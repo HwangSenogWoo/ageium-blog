@@ -1,0 +1,33 @@
+name: DIO Rust 1.88 Offline Toolchain
+on:
+  push:
+    branches:
+      - dio-rust-cache-20260929
+    paths:
+      - .github/workflows/dio-rust-1_88-offline.yml
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install exact Rust toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          rustup toolchain install 1.88.0 --profile minimal
+          SYSROOT="$(rustup run 1.88.0 rustc --print sysroot)"
+          rustup run 1.88.0 rustc --version --verbose
+          rustup run 1.88.0 cargo --version
+          mkdir -p out
+          tar -C "$(dirname "$SYSROOT")" -czf out/rust-toolchain-1.88.0-x86_64-unknown-linux-gnu.tgz "$(basename "$SYSROOT")"
+          sha256sum out/rust-toolchain-1.88.0-x86_64-unknown-linux-gnu.tgz > out/rust-toolchain-1.88.0-x86_64-unknown-linux-gnu.tgz.sha256
+      - name: Upload toolchain
+        uses: actions/upload-artifact@v4
+        with:
+          name: rust-toolchain-1.88.0-x86_64-unknown-linux-gnu
+          path: out/*
+          compression-level: 0
+          retention-days: 1
